@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import MiTecho.MiTecho.model.Producto;
 
 @Repository
-public interface ProductoRepository extends JpaRepository<Producto,Integer> {
+public interface IProductoRepository extends JpaRepository<Producto,Integer> {
 
 	
 
