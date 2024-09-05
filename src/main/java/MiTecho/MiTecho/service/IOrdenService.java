@@ -1,5 +1,11 @@
 package MiTecho.MiTecho.service;
 
-public interface IOrdenService {
+import java.util.List;
 
+import MiTecho.MiTecho.model.Orden;
+
+public interface IOrdenService {
+  List<Orden> findAll();
+  Orden save(Orden orden);
+  
 }
