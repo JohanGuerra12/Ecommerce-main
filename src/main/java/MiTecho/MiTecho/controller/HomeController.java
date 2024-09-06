@@ -2,6 +2,7 @@ package MiTecho.MiTecho.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,8 @@ import MiTecho.MiTecho.model.Orden;
 import MiTecho.MiTecho.model.Producto;
 import MiTecho.MiTecho.model.Usuario;
 import MiTecho.MiTecho.repository.IUsuarioRepository;
+import MiTecho.MiTecho.service.IDetalleOrdenService;
+import MiTecho.MiTecho.service.IOrdenService;
 import MiTecho.MiTecho.service.ProductoService;
 
 @Controller
@@ -32,6 +35,14 @@ public class HomeController {
 	private ProductoService productoService;
 	@Autowired
 	private IUsuarioRepository usuarioService;
+	
+
+
+	@Autowired
+	private IOrdenService ordenService;
+
+	@Autowired
+	private IDetalleOrdenService detalleOrdenService;
 	
 	List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
 	Orden orden = new Orden();
@@ -54,9 +65,6 @@ public class HomeController {
 	}
 	@PostMapping("/cart")
 	public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
-	    DetalleOrden detalleOrden = new DetalleOrden();
-	    double sumaTotal = 0;
-	    
 	    Optional<Producto> optionalProducto = productoService.get(id);
 	    
 	    if (optionalProducto.isPresent()) {
@@ -64,23 +72,29 @@ public class HomeController {
 	        log.info("Producto añadido: {}", producto);
 	        log.info("Cantidad: {}", cantidad);
 	        
-	        detalleOrden.setCantidad(cantidad);
-	        detalleOrden.setPrecio(producto.getPrecio());
-	        detalleOrden.setNombre(producto.getNombre());
-	        detalleOrden.setTotal(producto.getPrecio() * cantidad);
-	        detalleOrden.setProducto(producto);
+	        // Buscar el detalle existente en la lista
+	        DetalleOrden detalleExistente = detalles.stream()
+	            .filter(detalle -> detalle.getProducto().getId().equals(id))
+	            .findFirst()
+	            .orElse(null);
 	        
-	        Integer idProducto = producto.getId();
-	        boolean ingresado = detalles.stream().anyMatch(p -> p.getProducto().getId()==idProducto);
-	        
-	        if(!ingresado) {
-	        	 detalles.add(detalleOrden);
+	        if (detalleExistente != null) {
+	            // Actualizar cantidad y total si el detalle ya existe
+	            detalleExistente.setCantidad(detalleExistente.getCantidad() + cantidad);
+	            detalleExistente.setTotal(detalleExistente.getCantidad() * detalleExistente.getPrecio());
+	        } else {
+	            // Crear un nuevo detalle si no existe
+	            DetalleOrden nuevoDetalle = new DetalleOrden();
+	            nuevoDetalle.setCantidad(cantidad);
+	            nuevoDetalle.setPrecio(producto.getPrecio());
+	            nuevoDetalle.setNombre(producto.getNombre());
+	            nuevoDetalle.setTotal(producto.getPrecio() * cantidad);
+	            nuevoDetalle.setProducto(producto);
+	            detalles.add(nuevoDetalle);
 	        }
-	        	
-	        
-	       
-	        
-	        sumaTotal = detalles.stream().mapToDouble(DetalleOrden::getTotal).sum();
+
+	        // Actualizar el total de la orden
+	        double sumaTotal = detalles.stream().mapToDouble(DetalleOrden::getTotal).sum();
 	        orden.setTotal(sumaTotal);
 	    } else {
 	        log.warn("Producto con id {} no encontrado", id);
@@ -90,6 +104,7 @@ public class HomeController {
 	    model.addAttribute("orden", orden);
 	    return "usuario/carrito";
 	}
+
 	
 	@GetMapping("/delete/cart/{id}")
 	public String deleteProductCart(@PathVariable Integer id , Model model) {
@@ -126,4 +141,31 @@ public class HomeController {
 	    model.addAttribute("usuario", usuario);
 		return "usuario/resumenorden";
 	}
+	@GetMapping("/saveOrder")
+	public String saveOrder() {
+	    Date fechaCreacion = new Date();
+	    orden.setFechaCreacion(fechaCreacion);
+	    orden.setNumero(ordenService.generarNumeroOrden());
+
+	    // Usuario
+	    Usuario usuario = usuarioService.findById(1).get();
+	    orden.setUsuario(usuario);
+
+	    // Guardar la orden
+	    ordenService.save(orden);
+
+	    // Guardar los detalles
+	    for (DetalleOrden dt : detalles) {
+	        dt.setOrden(orden); // Asociar detalle con la orden
+	        detalleOrdenService.save(dt); // Guardar detalle
+	    }
+
+	    // Limpiar la lista y la orden
+	    orden = new Orden();
+	    detalles.clear();
+
+	    return "redirect:/";
+	}
+
+	
 }
