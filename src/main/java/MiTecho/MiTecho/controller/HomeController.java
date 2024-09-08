@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -165,6 +165,18 @@ public class HomeController {
 	    detalles.clear();
 
 	    return "redirect:/";
+	}
+	@PostMapping("/search")
+	public String searchProduct(@RequestParam String nombre, Model model) {
+	    log.info("Nombre del producto buscado: {}", nombre);
+	    
+	    // Convertir todo a minúsculas antes de comparar
+	    List<Producto> productos = productoService.findAll().stream()
+	        .filter(p -> p.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+	        .collect(Collectors.toList());
+	    
+	    model.addAttribute("productos", productos);
+	    return "usuario/home";
 	}
 
 	

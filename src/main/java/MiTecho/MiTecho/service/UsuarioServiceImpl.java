@@ -17,5 +17,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		
 		return usuarioRepository.findById(id);
 	}
+
+	@Override
+	public Usuario save(Usuario usuario) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.save(usuario);
+	}
 }
 
