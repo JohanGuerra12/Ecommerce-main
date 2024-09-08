@@ -37,7 +37,7 @@
 			    <ul class="navbar-nav ml-auto">
 			    
 			        <li class="nav-item"><a class="nav-link"
-			          href="login.html">Login</a></li>
+			         th:href="@{/usuario/login}">Login</a></li>
 			        </ul>
 			      </div>
 			    </div>
@@ -98,12 +98,12 @@
   <!-- /.container -->
 
 
-  <!-- Footer Include -->
-  <div th:include="usuario/template_usuario.html::footer"></div>
-
-  <!-- Bootstrap core JavaScript -->
-  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+	  <!-- Footer Include -->
+	  <div th:include="usuario/template_usuario.html::footer"></div>
+	
+	  <!-- Bootstrap core JavaScript -->
+	  <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+	  <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
 </body>
 
