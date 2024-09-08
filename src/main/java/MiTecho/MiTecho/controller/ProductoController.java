@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import MiTecho.MiTecho.model.Producto;
 import MiTecho.MiTecho.model.Usuario;
+import MiTecho.MiTecho.service.IUsuarioService;
 import MiTecho.MiTecho.service.ProductoService;
 import MiTecho.MiTecho.service.UploadFileService;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/productos")
@@ -28,7 +30,10 @@ public class ProductoController {
 	private ProductoService productoService;
 	
 	@Autowired
-	private UploadFileService upload;
+	private IUsuarioService usuarioService;
+	
+	@Autowired
+	private UploadFileService upload;	
 	
 	@GetMapping("")
 	public String show(Model model) {
@@ -40,9 +45,9 @@ public class ProductoController {
 		return "productos/create";
 	}
 	@PostMapping("/save")
-	public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
+	public String save(Producto producto,@RequestParam("img") MultipartFile file , HttpSession session) throws IOException {
 		LOGGER.info("Este es el objeto producto {}", producto);
-		Usuario u= new Usuario(1, "", "", "", "", "", "");
+		Usuario u= usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString() )).get();
 		producto.setUsuario(u);
 		
 		//imagen
