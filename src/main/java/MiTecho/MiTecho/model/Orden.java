@@ -99,5 +99,5 @@ public class Orden {
     public String toString() {
         return "Orden [id=" + id + ", numero=" + numero + ", FechaCreacion=" + FechaCreacion + ", FechaRecibido="
                 + FechaRecibido + ", total=" + total + "]";
-    }
+    }	
 }
