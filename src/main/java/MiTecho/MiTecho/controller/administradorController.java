@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import MiTecho.MiTecho.model.Producto;
+import MiTecho.MiTecho.service.IUsuarioService;
 import MiTecho.MiTecho.service.ProductoService;
 
 
@@ -23,6 +24,8 @@ import MiTecho.MiTecho.service.ProductoService;
 public class administradorController {
 @Autowired
 	private ProductoService productoService;
+@Autowired
+private IUsuarioService usuarioService;
 	
 	@GetMapping("")
 	public String home(Model model) {
@@ -30,6 +33,11 @@ public class administradorController {
 		List<Producto> productos=productoService.findAll();
 		model.addAttribute("productos", productos);
 		return "administrador/home";	
+	}
+	@GetMapping("/usuarios")
+	public String usuarios(Model model) {
+		model.addAttribute("usuarios", usuarioService.findAll());
+		return "administrador/usuarios";
 	}
 
 }
