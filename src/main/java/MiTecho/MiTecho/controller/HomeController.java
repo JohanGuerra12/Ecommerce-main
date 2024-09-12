@@ -61,10 +61,11 @@ public class HomeController {
 	 }
 	
 	@GetMapping("productohome/{id}")
-	public String productoHome(@PathVariable Integer id , Model model) {
+	public String productoHome(@PathVariable Integer id , Model model, HttpSession session) {
 		log.info("Id product enviado como parametro {}", id);
 		Producto producto =  new Producto();	
 		Optional<Producto> productoOptional = productoService.get(id);
+		 model.addAttribute("sesion", session.getAttribute("idusuario"));
 		producto = productoOptional.get();
 		
 		model.addAttribute("producto", producto);
