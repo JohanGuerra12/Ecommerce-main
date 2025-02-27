@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+	
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Spring eCommerce</title>
+
+
+  <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/heroic-features.css}" rel="stylesheet">
+    <style>
+        .jumbotron {
+     background: url('/img/bann.png') no-repeat center center;
+     background-size: cover;
+     background-color: #333; /* Color de respaldo */
+     color: white;
+     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Mayor opacidad para mejor contraste */
+     min-height: 450px; /* Más adaptable */
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     text-align: center;
+     padding: 2rem; /* Agrega espacio alrededor del contenido */
+     animation: fadeIn 1s ease-in-out; /* Efecto de entrada suave */
+     transition: background-color 0.3s ease-in-out; /* Transición para el color de fondo */
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+     }
+     to {
+         opacity: 1;
+     }
+ }
+
+ .jumbotron:hover {
+     background-color: rgba(0, 0, 0, 0.5); /* Sutil oscurecimiento al pasar el mouse */
+ }
+         .card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .card-body {
+        padding: 15px;
+        background: #fff;
+    }
+
+    .card-text {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .card-footer {
+        background: #fff;
+        border-top: none;
+        padding: 10px 15px;
+        text-align: center;
+    }
+
+    .btn-success {
+        border-radius: 50px;
+        padding: 8px 15px;
+        transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+        transform: scale(1.05);
+    }
+
+    </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+	 <div th:include="usuario/template_usuario.html::header" th:if="${sesion== null}"> </div>
+	 
+	 <div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion== null}"> </div>	
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Jumbotron Header -->
+      <header class="jumbotron my-4">
+
+      </header>
+
+      <!-- Page Features -->
+      <div class="row text-center">
+
+		<div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">
+		         <div class="card h-100">
+		           <img class="card-img-top" th:src="@{/images/{img}(img=${producto.imagen})}" alt="">
+		           <div class="card-body">
+		             <p class="card-text" th:text="${producto.nombre}"> </p>
+		           </div>
+		           <div class="card-footer">
+		             <a th:href="@{/productohome/{id} (id=${producto.id}) }" class="btn btn-success">Ver producto</a>
+		           </div>
+		         </div>
+		       </div>
+
+        
+
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+	<div th:include="usuario/template_usuario.html::footer"> 
+		</div>
+
+	<!-- Bootstrap core JavaScript -->
+	   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
+	   <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+  </body>
+
+  </html>

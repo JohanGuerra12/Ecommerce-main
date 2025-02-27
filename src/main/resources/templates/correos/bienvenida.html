@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenido a MiTecho</title>
+  <style>
+    .container {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px;
+        margin: auto;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    .content {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 30px;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #888;
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>¡Bienvenido a <strong>MiTecho</strong>!</h1>
+  </div>
+  <div class="content">
+    <p>Hola <strong th:text="${nombreUsuario}">Usuario</strong>,</p>
+    <p>¡Gracias por registrarte en <strong>MiTecho</strong>! 🌟</p>
+    <p>Explora nuestra tienda y encuentra las mejores opciones para ti.</p>
+
+  </div>
+  <div class="footer">
+    © 2025 MiTecho. Todos los derechos reservados.
+  </div>
+</div>
+</body>
+</html>
