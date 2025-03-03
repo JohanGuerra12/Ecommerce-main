@@ -20,7 +20,6 @@ public class ReporteProductoService {
         PdfWriter.getInstance(documento, outputStream);
         documento.open();
 
-        // **Agregar imagen del logo**
         try {
             Image logo = Image.getInstance("/static/img/Logo.png");
             logo.scaleAbsolute(100, 50);
@@ -30,14 +29,12 @@ public class ReporteProductoService {
             e.printStackTrace();
         }
 
-        // **Encabezado**
         Font fuenteEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, new Color(70, 130, 180));
         Paragraph titulo = new Paragraph("Reporte de Productos", fuenteEncabezado);
         titulo.setAlignment(Element.ALIGN_CENTER);
         documento.add(titulo);
         documento.add(new Paragraph(" "));
 
-        // **Fecha de generación del reporte**
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Paragraph fecha = new Paragraph("Fecha de impresión: " + sdf.format(new Date()),
                 FontFactory.getFont(FontFactory.HELVETICA, 10));
@@ -45,7 +42,6 @@ public class ReporteProductoService {
         documento.add(fecha);
         documento.add(new Paragraph(" "));
 
-        // **Tabla de productos**
         PdfPTable tabla = new PdfPTable(6); // Mantener 6 columnas
         tabla.setWidthPercentage(100);
         tabla.setSpacingBefore(10f);
