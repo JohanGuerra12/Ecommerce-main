@@ -60,7 +60,7 @@ public class UsuarioController {
 
     @GetMapping("/login")
     public String login() {
-        return "usuario/login";
+        return "/usuario/login";
     }
 
     @GetMapping("/acceder")
