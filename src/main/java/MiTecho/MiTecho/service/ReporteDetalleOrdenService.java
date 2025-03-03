@@ -28,14 +28,12 @@ public class ReporteDetalleOrdenService {
         PdfWriter.getInstance(documento, outputStream);
         documento.open();
 
-        // **Encabezado**
         Font fuenteEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, new Color(70, 130, 180));
         Paragraph titulo = new Paragraph("Reporte de Detalles de Orden", fuenteEncabezado);
         titulo.setAlignment(Element.ALIGN_CENTER);
         documento.add(titulo);
         documento.add(new Paragraph(" "));
 
-        // **Fecha de generación del reporte**
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Paragraph fecha = new Paragraph("Fecha de impresión: " + sdf.format(new Date()),
                 FontFactory.getFont(FontFactory.HELVETICA, 10));
@@ -43,7 +41,6 @@ public class ReporteDetalleOrdenService {
         documento.add(fecha);
         documento.add(new Paragraph(" "));
 
-        // **Obtener los detalles de orden agrupados por Orden**
         List<DetalleOrden> detallesOrden = obtenerTodosLosDetalles();
         generarTablaDetalleOrden(documento, detallesOrden);
 
@@ -82,7 +79,6 @@ public class ReporteDetalleOrdenService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         boolean colorCebra = false;
 
-        // Agrupar detalles por orden
         Map<String, List<DetalleOrden>> ordenesAgrupadas = new LinkedHashMap<>();
         for (DetalleOrden detalle : detalles) {
             String numeroOrden = detalle.getOrden().getNumero();
